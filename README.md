@@ -1,5 +1,5 @@
 # Pandacoop
 
-node
-discord.js
+node,
+discord.js,
 dotenv
