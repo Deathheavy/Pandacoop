@@ -1,5 +1,3 @@
 # Pandacoop
 
-node,
-discord.js,
-dotenv
+npm install discord.js dotenv
