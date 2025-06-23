@@ -1,0 +1,10 @@
+{
+  "game": {
+    "nome": "Game 1",
+    "link": "link1"
+  },
+  "gametwo": {
+    "nome": "Game 2",
+    "link": "link2"
+  }
+}
