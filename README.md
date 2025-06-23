@@ -1,5 +1,5 @@
 # Pandacoop
 
 https://nodejs.org/pt/download<br>
-cd "C:\Users\USER\Desktop\Pandacoop"<br>
+cd "C:\Pandacoop"<br>
 npm install discord.js dotenv
