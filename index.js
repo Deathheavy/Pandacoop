@@ -32,9 +32,6 @@ const { adicionarJogo } = require('./utils/adicionarJogo');
 // limpar chat
 const { handleLimparCommand } = require('./utils/limparCommand');
 
-// gameplay YT
-const { handleGameplayCommand } = require('./utils/gameplayCommand');
-
 // Atualiza o cache da lista de jogos
 let cacheJogos = null;
 let ultimaAtualizacao = 0;
@@ -48,9 +45,9 @@ Object.defineProperty(global, 'jogos', {
         const data = fs.readFileSync(caminhoJogos, 'utf-8');
         cacheJogos = JSON.parse(data);
         ultimaAtualizacao = agora;
-        console.log('♻️ Recarregando jogos.json...');
+        console.log('Recarregando jogos.json...');
       } catch (err) {
-        console.error('❌ Erro ao recarregar jogos.json:', err.message);
+        console.error('Erro ao recarregar jogos.json:', err.message);
         cacheJogos = {};
       }
     }
@@ -69,7 +66,7 @@ function carregarLancamentos() {
     const data = fs.readFileSync(caminhoLancamentos, 'utf-8');
     return JSON.parse(data);
   } catch (err) {
-    console.error('❌ Erro ao ler o arquivo lancamentos.json:', err.message);
+    console.error('Erro ao ler o arquivo lancamentos.json:', err.message);
     return [];
   }
 }
@@ -84,44 +81,12 @@ const client = new Client({
 
 // discord
 client.once('ready', async () => {
-  console.log(`
-░░░░░░▒░░░░░░░░░░░░░░░░░░░░░▒░░░░▒▓█████████████▓▒▒░░░░░░░░░░░░░░░░░░░░░░░░
-░░▒░░░░░░░░░░░░░░░░░░░░░░░░░░▒▓███▓▓▓███████████▓███▓▒░░░░░░░░░░░░░░▒░░░░░░
-░░░░░░░░░░░░░▒▒▒▒▒▒░░░░░▒░▒▒███▓███████████████████▓▓██▒░░░░░░░░▒▒░░░░░░░░▒
-░░░░░░░░▒▒▓█████████▓░░░▒▓██▓█████████▓▒▒░░░▒░▒███████▓█▓▒░░░░░░░░▒▒░░░░░░░
-░░░░░░▒░▓█████████████▒▓██▓█████▒▒██▓░░░░░░░░░░░▓█████████▒░░░░░▒░░░▒░░▒░░░
-░░░░░░▒█████████████████▓██████▒▒░▒█▒░▒▓▓▒░░░▒▒░░▓█▓░████▓█▓░▒▓▓▓▓▒░░░░░░▒░
-░░░░░▒████████████████▓█████████████░▓████▒░▓███▓▒▓▓▓▓████▓█████████▓▒░░░░░
-░░░░░▓██████████████▓███████████████▓▒▓██▓▒▒▓███▒▓█████████▓██████████▒░▒░░
-░░░░░▓███████████▓▓███████████████████▒░░▒██▒░░▒████████████▓██████████▒░░░
-░░░░░▓█████████▓███████████████████▓▒▓▓░░▒░░▒░▒▓▒██████████████████████▓░░░
-░▒▒▒▒▓██████▓████████████████████▒░▒███▒▒▓▒▒▓▒▒██▒░▒███████████▓████████░░░
-░▓███████████████████████████████████████████████▓▓████████████████████▓░░░
-░▒█████████████████████████████████████████████████████████████████████▒░░░
-░░▒███████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████████████████████▓▒
-░░░▒██████████████████▓▓▓▒▒▓▓░░░▒░▒░░▒░▒▒▒░░▒▒▓▓▓▓▓▓▓█████████████████████▒
-░░▒▒░▒█████████████▓▓▓▒░▒██████▓░░░░░░░▒░░░░░░░░░░▒▒░▒▒▓▓████████████████▒░
-░░░░░░░▒▓█████████▓▒░░░░░▓████████▒░▒▒░░▓▓▒░▒▒▒░▒░░░▒█████▓████████████▒░░▒
-░░░░▒░░▒░░▒▒▓███▓▒▒░░░░░▓██▓▒▓██████▓▒░░▒█▓░▒▓▒░░▒▓██████▓▓▓███████▓▒▒░░▒░░
-░░░░░░░░░░░▓████▓▒▒▒░░░▒███▒░████▓▒███████▒▒▒█▓▓███▓█▓▓██▓░▒██▒▒░░▒░░▒░░░░░
-░░░░░░░░▒▒▓████▓▓▒▒░░░▒▒███▓░▒██████▓██▓▓▒▒▒▒▓███████▒▒██▓░▒▒█▓░░░░░░░░░░░░
-░░░░░░░░░░░▒████▓▒▒▒░░░▒█████▓▒░░░▒██▓▒▒░░░░░░▓█▓███▒▒███▓░▒███▓░░░░░░░░▒░░
-░░░░░░▒░░░░▓████▓▒▒▒▒▒░░░▓█████████▓░░░░░░░░░░░▒██▓▓█████▒░░▓█▓▒▒░▒░░░░░░░░
-░░░░░░░░▒▒▒░░▓██▓▓▒▒▒░░░░░░▒▓▓▓▓▓▒░░░▒░▓███████▒▒██████▒░░▒▓▒█▓░░▒░░░░░░░▒░
-░░░▒░░░░▒▒░▒▓█████▓▓▒▒░▒░░░░░░░▒░░░░░░░░▒█████▓░░▒▓░▒▒░░░░▒▓██▓░░▒░░░░░░░░░
-░░░░░░░░░▓█████████▓▓▓▒▒▒░░░░░░░░▒░░░░░░░░▒▓░░░░░░▒░░░▒▒▒▒██▓▓▒░▒░▒▒░▒░░▒░░
-░░░░░░░▒██████████████▓▓▓▒▒░░░░░░░▒▓▓▓▒▒▒▒█▓▒░░░░░░░░░▒▓▓███▒░▒░░░░░░░░░░░░
-░░░░░░▒███████████████████▓▓▓▒▒░░░▒░░░░░░░░░▒▓█░░░░▒▒▓████████▒░░░▒░▒▒░░░░▒
-░▒░░▒▒▒███████████████████████▓█▓▒▒░░░░░▒▒░░░░░▒▓▓▓████████████▓▒░▒▒▒▒░░▒░░
-░░░░░▒██████████████████████████████▓▓▒▒▒▒▒▒▓▓████████████████████▓▒▒░▒░░░░
-░░░░▒███████████████████████████████████████████████████████████████▓▒░░▒▒░
-`);
   client.user.setActivity({
     name: '!sobre | !ajuda',
     type: ActivityType.Playing
   });
 
-  console.log('🧪 Iniciando checagem dos comandos e arquivos...');
+  console.log('Iniciando checagem dos comandos e arquivos...');
 
   // Verificar arquivos essenciais
   try {
@@ -129,14 +94,14 @@ client.once('ready', async () => {
     const lancamentosData = fs.readFileSync(caminhoLancamentos, 'utf-8');
     JSON.parse(jogosData);
     JSON.parse(lancamentosData);
-    console.log('📂 Arquivos jogos.json e lancamentos.json carregados com sucesso.');
+    console.log('Arquivos jogos.json e lancamentos.json carregados com sucesso.');
   } catch (err) {
-    console.error('❌ Erro ao carregar arquivos JSON:', err.message);
+    console.error('Erro ao carregar arquivos JSON:', err.message);
   }
 
   // Verificar se comandos principais estão definidos
   const comandos = ['!jogo', '!nomedojogo', '!lista', '!info', '!gameplay', '!sobre', '!limpar', '!ajuda', '!status', '!lançamentos'];
-  console.log(`📋 Comandos principais registrados: ${comandos.join(', ')}`);
+  console.log(`Comandos principais registrados: ${comandos.join(', ')}`);
 
   // Checar permissão de envio de mensagens em pelo menos um canal
   let permissaoOK = false;
@@ -153,12 +118,12 @@ client.once('ready', async () => {
   });
 
   if (permissaoOK) {
-    console.log('✅ O bot tem permissão para enviar mensagens em pelo menos um canal.');
+    console.log('O bot tem permissão para enviar mensagens em pelo menos um canal.');
   } else {
-    console.warn('⚠️ O bot não tem permissão para enviar mensagens em nenhum canal visível.');
+    console.warn('O bot não tem permissão para enviar mensagens em nenhum canal visível.');
   }
   
-  console.log(`✅ Inicialização completa. Todos os testes foram executados. Bot online como ${client.user.tag}`);
+  console.log(`Inicialização completa. Todos os testes foram executados. Bot online como ${client.user.tag}`);
   await verificarLancamentos(); // load da função abaixo
 });
 
@@ -175,7 +140,7 @@ async function verificarLancamentos() {
 
   if (lancamentosHoje.length === 0) return;
 
-  const mensagem = `<a:clap:1377384175987855513> **Lançamentos de hoje (${dataHoje})**:\n` + lancamentosHoje.map(j => `${j.nome}`).join('\n');
+  const mensagem = `**Lançamentos de hoje (${dataHoje})**:\n` + lancamentosHoje.map(j => `${j.nome}`).join('\n');
 
   // Enviar em todos os canais
   client.guilds.cache.forEach(guild => {
@@ -191,7 +156,7 @@ async function verificarLancamentos() {
   const novosLancamentos = lancamentos.filter(jogo => jogo.data !== dataHoje);
   fs.writeFileSync(path.join(__dirname, 'lancamentos.json'), JSON.stringify(novosLancamentos, null, 2), 'utf-8');
 
-  console.log(`✅ Lançamentos de ${dataHoje} anunciados e removidos.`);
+  console.log(`Lançamentos de ${dataHoje} anunciados e removidos.`);
 }
 
 client.on('messageCreate', (message) => {
@@ -237,7 +202,7 @@ if (msg.toLowerCase() === '!jogo') {
   const chaveSorteada = chaves[Math.floor(Math.random() * chaves.length)];
   const jogo = jogos[chaveSorteada];
 
-  message.reply(`<:sorteado:1377014290846060739> Jogo sorteado: **${jogo.nome}**\n<a:link:1378756510053830676> Download: ${jogo.link} <a:Dance:1377385456672702566>`)
+  message.reply(`Jogo sorteado: **${jogo.nome}**\nDownload: ${jogo.link}`)
     .then(botMsg => {
       setTimeout(() => {
         message.delete().catch(() => {});
@@ -255,7 +220,7 @@ if (msg.toLowerCase() === '!jogo') {
     const restanteMs = COOLDOWN_TEMPO - (agora - ultimoUso);
     const horas = Math.floor(restanteMs / (1000 * 60 * 60));
     const minutos = Math.floor((restanteMs % (1000 * 60 * 60)) / (1000 * 60));
-    return message.reply(`<:Calma:1377011131109085335> Calma ae o ligeirinho! Use esse comando novamente em ${horas}h ${minutos}m.`)
+    return message.reply(`Calma ae o ligeirinho! Use esse comando novamente em ${horas}h ${minutos}m.`)
       .then(botMsg => {
         setTimeout(() => {
           message.delete().catch(() => {});
@@ -267,7 +232,7 @@ if (msg.toLowerCase() === '!jogo') {
   cooldowns.set(message.author.id, agora);
 
   console.log(`[COMANDO] !lista usado por ${message.author.tag}`);
-  const linhas = ['<:Lista:1377015811713011833> **Jogos disponíveis:**\n', ...Object.values(jogos).map(j => `• ${j.nome}`)];
+  const linhas = ['**Jogos disponíveis:**\n', ...Object.values(jogos).map(j => `• ${j.nome}`)];
 
   let bloco = '';
   for (const linha of linhas) {
@@ -287,7 +252,7 @@ if (msg.toLowerCase() === '!jogo') {
 else if (msg.toLowerCase() === '!ajuda') {
   console.log(`[COMANDO] !ajuda usado por ${message.author.tag}`);
   const embed = new EmbedBuilder()
-    .setTitle('<a:about:1378756920063692883> Comandos do Bot')
+    .setTitle('Comandos do Bot')
     .setColor(0xae6800)
     .setDescription(`
 • \`!jogo\` — Sorteia um jogo aleatório
@@ -304,7 +269,7 @@ else if (msg.toLowerCase() === '!ajuda') {
 • **[Twitch AD's](https://pastebin.com/raw/s1yki08r)** — Guia para remover as propagandas
 • **[Recomendações e Programas](https://pastebin.com/raw/H0A8cnp6)** — Lista de programas
 • **[Stremio](https://pastebin.com/raw/DMp9MUma)** — Assistir séries e filmes\n
-<:Sailors:1377016721139040296> **Greetings: 0xdeadc0de, RUNE, TENOKE, Fitgirl & DODI**
+**Greetings: Online-fix, Fitgirl & DODI**
 Se comprar não é possuir, piratear não é roubar!
 `)
     .setThumbnail('https://i.imgur.com/3Dg9XI9.png');
@@ -319,7 +284,7 @@ else if (msg.toLowerCase() === '!lançamentos') {
   const lancamentos = carregarLancamentos();
 
   const embed = new EmbedBuilder()
-    .setTitle('<a:loading:1378759937710358698> Próximos Lançamentos de Jogos')
+    .setTitle('Próximos Lançamentos de Jogos')
     .setColor(0xae6800)
     .setDescription(
       Object.values(lancamentos)
@@ -341,7 +306,7 @@ else if (msg.toLowerCase() === '!status') {
   console.log(`[COMANDO] !status usado por ${message.author.tag}`);
   const uptime = process.uptime();
   const minutos = Math.floor(uptime / 60);
-  message.channel.send(`<:status:1377012004308648036> Estou online e tenho ${Object.keys(jogos).length} jogos cadastrados <a:pO:1377384885710225680>`)
+  message.channel.send(`Estou online e tenho ${Object.keys(jogos).length} jogos cadastrados <a:pO:1377384885710225680>`)
       .then(botMsg => {
         setTimeout(() => {
           message.delete().catch(() => {});
@@ -357,7 +322,7 @@ else if (msg.startsWith('!')) {
   console.log(`[COMANDO] !<nomedojogo> usado por ${message.author.tag}: "${msg.substring(1)}"`);
 
   if (jogosEncontrados.length === 0) {
-    return message.reply(`<:X_:1377013402098208778> Nenhum jogo encontrado para: "${msg.substring(1)}" <a:Homer:1377386205879996497>`) // nome errado ou fora da lista
+    return message.reply(`Nenhum jogo encontrado para: "${msg.substring(1)}"`) // nome errado ou fora da lista
       .then(botMsg => {
         setTimeout(() => {
           message.delete().catch(() => {});
@@ -368,7 +333,7 @@ else if (msg.startsWith('!')) {
 
   if (jogosEncontrados.length === 1) {
     const jogo = jogosEncontrados[0];
-    return message.reply(`<:Download:1377005613481070704> Download **${jogo.nome}**:\n${jogo.link}`)
+    return message.reply(`Download **${jogo.nome}**:\n${jogo.link}`)
       .then(botMsg => {
         setTimeout(() => {
           message.delete().catch(() => {});
@@ -378,7 +343,7 @@ else if (msg.startsWith('!')) {
   }
 
   const embed = new EmbedBuilder()
-    .setTitle(`<:jogos:1377016515366223872> Jogos encontrados com "${msg.substring(1)}"`)
+    .setTitle(`Jogos encontrados com "${msg.substring(1)}"`)
     .setColor(0xae6800)
     .setDescription(jogosEncontrados.map(j => `**${j.nome}**\n${j.link}`).join('\n\n'))
     .setThumbnail('https://i.imgur.com/6qHSsph.png');
