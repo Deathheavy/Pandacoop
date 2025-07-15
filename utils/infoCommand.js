@@ -74,7 +74,7 @@ async function obterAppId(jogoNome, jogoOriginal = null) {
 
 async function handleInfoCommand(msg, args, jogos, encontrarJogoPorNome) {
     console.log(`[COMANDO] !info ${args.join(' ')} usado por ${msg.author?.tag || 'Desconhecido'}` );
-  if (!args.length) return msg.reply('⚠️ Use `!info <nome do jogo>`')
+  if (!args.length) return msg.reply('Use `!info <nome do jogo>`')
         .then(botMsg => {
         setTimeout(() => {
           msg.delete().catch(() => {});
@@ -86,7 +86,7 @@ async function handleInfoCommand(msg, args, jogos, encontrarJogoPorNome) {
   const jogosEncontrados = encontrarJogoPorNome(nomeBusca, jogos);
 
   if (!jogosEncontrados || jogosEncontrados.length === 0) {
-    return msg.reply(`❌ Jogo "${nomeBusca}" não encontrado na lista.`)
+    return msg.reply(`Jogo "${nomeBusca}" não encontrado na lista.`)
         .then(botMsg => {
         setTimeout(() => {
           msg.delete().catch(() => {});
@@ -101,7 +101,7 @@ async function handleInfoCommand(msg, args, jogos, encontrarJogoPorNome) {
     const nomeBase = extrairNomeBase(jogo.nome);
     const appid = await obterAppId(nomeBase, jogo);
     if (!appid) {
-      return msg.reply(`⚠️ Não consegui encontrar esse jogo na Steam.`)
+      return msg.reply(`Não consegui encontrar esse jogo na Steam.`)
         .then(botMsg => {
         setTimeout(() => {
           msg.delete().catch(() => {});
@@ -117,7 +117,7 @@ async function handleInfoCommand(msg, args, jogos, encontrarJogoPorNome) {
     const info = data[appid.toString()]?.data;
 
     if (!info) {
-      return msg.reply('❌ Não consegui obter informações sobre esse jogo.')
+      return msg.reply('Não consegui obter informações sobre esse jogo.')
         .then(botMsg => {
         setTimeout(() => {
           msg.delete().catch(() => {});
@@ -126,11 +126,11 @@ async function handleInfoCommand(msg, args, jogos, encontrarJogoPorNome) {
       });
     }
 
-    return msg.reply(`🎮 **${info.name}**
-📝 ${info.short_description}
-📅 Lançado em: ${info.release_date?.date || 'Desconhecido'}
-💵 Preço: ${info.is_free ? 'Gratuito' : (info.price_overview?.final_formatted || 'Indisponível')}
-🔗 https://store.steampowered.com/app/${appid}`)
+    return msg.reply(`**${info.name}**
+ ${info.short_description}
+ Lançado em: ${info.release_date?.date || 'Desconhecido'}
+ Preço: ${info.is_free ? 'Gratuito' : (info.price_overview?.final_formatted || 'Indisponível')}
+ https://store.steampowered.com/app/${appid}`)
         .then(botMsg => {
         setTimeout(() => {
           msg.delete().catch(() => {});
@@ -139,7 +139,7 @@ async function handleInfoCommand(msg, args, jogos, encontrarJogoPorNome) {
       });
   } catch (error) {
     console.error('Erro no comando !info:', error);
-    return msg.reply('<:X_:1377013402098208778> Ocorreu um erro ao buscar as informações. Tente novamente mais tarde.')
+    return msg.reply('Ocorreu um erro ao buscar as informações. Tente novamente mais tarde.')
         .then(botMsg => {
         setTimeout(() => {
           msg.delete().catch(() => {});
