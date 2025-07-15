@@ -7,7 +7,7 @@ async function handleLimparCommand(msg) {
 
   // Verifica se o bot tem permissão para gerenciar mensagens
   if (!canal.permissionsFor(msg.client.user).has(PermissionsBitField.Flags.ManageMessages)) {
-    return msg.reply('<a:Homer:1377386205879996497> Não tenho permissão para deletar mensagens neste canal.')
+    return msg.reply('Não tenho permissão para deletar mensagens neste canal.')
         .then(botMsg => {
         setTimeout(() => {
           message.delete().catch(() => {});
@@ -25,7 +25,7 @@ async function handleLimparCommand(msg) {
     const mensagensDeHoje = mensagens.filter(m => now - m.createdTimestamp <= 24 * 60 * 60 * 1000);
 
     if (mensagensDeHoje.size === 0) {
-      return msg.reply('<a:clap:1377384175987855513> Nenhuma mensagem das últimas 24 horas foi encontrada para deletar.');
+      return msg.reply('Nenhuma mensagem das últimas 24 horas foi encontrada para deletar.');
     }
 
     // Deleta em massa (bulkDelete ignora mensagens com mais de 14 dias)
@@ -35,7 +35,7 @@ async function handleLimparCommand(msg) {
     setTimeout(() => aviso.delete().catch(() => {}), 5000);
   } catch (erro) {
     console.error('Erro ao limpar mensagens:', erro);
-    msg.reply('<:X_:1377013402098208778> Ocorreu um erro ao tentar limpar as mensagens.');
+    msg.reply('Ocorreu um erro ao tentar limpar as mensagens.');
   }
 }
 
