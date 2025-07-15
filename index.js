@@ -255,7 +255,6 @@ else if (msg.toLowerCase() === '!ajuda') {
 • \`!status\` — Mostra status e número de jogos
 • \`!lançamentos\` — Lista os jogos com data de lançamento
 • \`!info <nomedojogo>\` — Informações do jogo da lista na Steam
-• \`!gameplay <nomedojogo>\` — Busca uma gameplay no YT
 • \`!limpar\` — Limpa as ultimas 24 horas do chat do bot
 • \`!sobre\` — Informações sobre o bot e fontes
 • \`!ajuda\` — Mostra esta mensagem com os comandos disponíveis
