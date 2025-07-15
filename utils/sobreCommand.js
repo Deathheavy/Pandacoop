@@ -18,7 +18,7 @@ async function handleSobreCommand(msg) {
       },
       {
         name: '',
-        value: `Feito por [Deathheavy](https://youtu.be/AIHQZvZYsMw)`,
+        value: `Feito por [Deathheavy](https://github.com/Deathheavy/Pandacoop)`,
       },
     )
     .setFooter({
