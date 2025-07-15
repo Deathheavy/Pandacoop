@@ -29,9 +29,9 @@ function adicionarJogo(message, msg, jogos) {
     if (!jogos[chave]) {
       jogos[chave] = { nome, link };
       salvarJogos(jogos);  // <-- aqui você passa o objeto jogos para salvar!
-      console.log(`✅ Jogo adicionado: ${nome}`);
+      console.log(`Jogo adicionado: ${nome}`);
     } else {
-      console.log(`⚠️ Jogo já existe: ${nome}`);
+      console.log(`Jogo já existe: ${nome}`);
     }
   }
 }
