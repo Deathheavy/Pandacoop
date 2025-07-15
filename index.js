@@ -177,12 +177,6 @@ client.on('messageCreate', (message) => {
     return handleInfoCommand(message, args, global.jogos, encontrarJogoPorNome);
   }
 
- // !gameplay <nomedojogo> em utils
- if (comando === 'gameplay') {
-    console.log(`[COMANDO] !gameplay usado por ${message.author.tag}: "${msg.substring(1)}"`);
-  return handleGameplayCommand(message, args);
- }
-
  // !sobre em utils
   if (comando === 'sobre') {
       console.log(`[COMANDO] !sobre usado por ${message.author.tag}`);
@@ -306,7 +300,7 @@ else if (msg.toLowerCase() === '!status') {
   console.log(`[COMANDO] !status usado por ${message.author.tag}`);
   const uptime = process.uptime();
   const minutos = Math.floor(uptime / 60);
-  message.channel.send(`Estou online e tenho ${Object.keys(jogos).length} jogos cadastrados <a:pO:1377384885710225680>`)
+  message.channel.send(`Estou online e tenho ${Object.keys(jogos).length} jogos cadastrados`)
       .then(botMsg => {
         setTimeout(() => {
           message.delete().catch(() => {});
