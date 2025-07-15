@@ -15,7 +15,7 @@ function normalize(text) {
 
 // Função para adicionar jogo direto do Discord
 function adicionarJogo(message, msg, jogos) {
-  const canalPermitido = '1372785881135579300';
+  const canalPermitido = 'IDCANAL'; // ADICIONAR ID DO CANAL ONDE OS ARQUIVOS SÃO ENVIADOS!
   if (message.channel.id !== canalPermitido) return;
 
   const arquivos = message.attachments;
